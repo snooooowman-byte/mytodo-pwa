@@ -174,13 +174,13 @@ body {
 
 /* Date menu popup */
 .date-menu {
-  position:absolute; background:var(--bg-card); border-radius:12px; box-shadow:var(--shadow);
-  padding:6px; z-index:1500; display:none; min-width:140px;
+  position:fixed; background:var(--bg-card); border-radius:12px; box-shadow:var(--shadow);
+  padding:6px; z-index:1500; display:none; min-width:160px;
 }
 .date-menu.show { display:block; }
 .date-menu button {
-  width:100%; background:transparent; border:none; color:var(--fg); font-size:13px;
-  text-align:left; padding:8px 12px; cursor:pointer; border-radius:8px; font-family:inherit;
+  width:100%; background:transparent; border:none; color:var(--fg); font-size:15px;
+  text-align:left; padding:12px 14px; cursor:pointer; border-radius:8px; font-family:inherit;
 }
 .date-menu button:active, .date-menu button:hover { background:var(--bg-item); }
 .date-menu hr { border:0; border-top:1px solid var(--bg-item); margin:4px 0; }
@@ -227,34 +227,36 @@ body {
 
 /* FAB */
 .fab-wrap {
-  position:fixed; right:18px; bottom:calc(env(safe-area-inset-bottom,18px) + 18px);
-  z-index:1200; display:flex; flex-direction:column-reverse; align-items:flex-end; gap:10px;
+  position:fixed; left:18px; bottom:calc(env(safe-area-inset-bottom,18px) + 18px);
+  z-index:1200; display:flex; flex-direction:column-reverse; align-items:flex-start; gap:14px;
 }
 .fab {
-  width:56px; height:56px; border-radius:999px; border:none; background:var(--accent);
-  color:var(--accent-text); font-size:28px; cursor:pointer; box-shadow:var(--shadow);
+  width:60px; height:60px; border-radius:999px; border:none; background:var(--accent);
+  color:var(--accent-text); font-size:32px; cursor:pointer; box-shadow:var(--shadow);
   display:flex; align-items:center; justify-content:center;
   transition:transform 200ms ease, background 200ms;
-  font-weight:200;
+  font-weight:200; padding:0;
 }
 .fab:active { background:var(--accent-hov); }
 .fab.open { transform:rotate(45deg); }
 .fab-mini {
-  display:flex; align-items:center; gap:8px;
+  display:flex; align-items:center; gap:10px; background:transparent; border:none; padding:0; cursor:pointer;
   opacity:0; pointer-events:none; transform:translateY(8px);
   transition:opacity 200ms ease, transform 200ms ease;
+  font-family:inherit;
 }
 .fab-wrap.open .fab-mini { opacity:1; pointer-events:auto; transform:translateY(0); }
-.fab-mini-lbl {
-  background:var(--bg-card); color:var(--fg); font-size:12px; padding:6px 12px;
-  border-radius:8px; box-shadow:var(--shadow-sm); font-weight:600;
-}
-.fab-mini-btn {
-  width:44px; height:44px; border-radius:999px; border:none; background:var(--bg-card);
-  color:var(--fg); font-size:18px; cursor:pointer; box-shadow:var(--shadow-sm);
+.fab-mini-icon {
+  width:56px; height:56px; border-radius:999px; background:var(--bg-card);
+  color:var(--fg); font-size:24px; box-shadow:var(--shadow-sm);
   display:flex; align-items:center; justify-content:center;
+  transition:background 200ms;
 }
-.fab-mini-btn:active { background:var(--bg-chip); }
+.fab-mini:active .fab-mini-icon { background:var(--bg-chip); }
+.fab-mini-lbl {
+  background:var(--bg-card); color:var(--fg); font-size:14px; padding:8px 14px;
+  border-radius:10px; box-shadow:var(--shadow-sm); font-weight:600;
+}
 
 /* Settings modal */
 .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:2000; display:flex; align-items:center; justify-content:center; padding:20px; }
@@ -359,7 +361,7 @@ body {
 
 <div class="card card-sm input-card">
   <div class="input-row">
-    <input type="text" class="task-input" id="taskInput" placeholder="やりたいことを入力...">
+    <input type="text" class="task-input" id="taskInput" placeholder="ToDoを入力...">
     <button class="date-toggle" id="dateToggle" title="期限を設定">📅</button>
     <button class="star-toggle" id="starToggle" title="大事なタスクとして追加"></button>
     <button class="add-btn" id="addBtn">＋ 追加</button>
@@ -384,16 +386,16 @@ body {
   </div>
 </div>
 
-<div class="footer">my todo · v1.5 💜</div>
+<div class="footer">my todo · v1.6 💜</div>
 
 <div class="toast" id="toast">やったね！🎉</div>
 <div class="sparkle-canvas" id="sparkleCanvas"></div>
 
 <div class="fab-wrap" id="fabWrap">
   <button class="fab" id="fab" aria-label="クイック追加">+</button>
-  <div class="fab-mini" data-target="task"><span class="fab-mini-lbl">タスク</span><button class="fab-mini-btn">✓</button></div>
-  <div class="fab-mini" data-target="habit"><span class="fab-mini-lbl">習慣</span><button class="fab-mini-btn">🔥</button></div>
-  <div class="fab-mini" data-target="memo"><span class="fab-mini-lbl">メモ</span><button class="fab-mini-btn">📝</button></div>
+  <button class="fab-mini" data-target="task" type="button"><span class="fab-mini-icon">✓</span><span class="fab-mini-lbl">ToDo</span></button>
+  <button class="fab-mini" data-target="habit" type="button"><span class="fab-mini-icon">🔥</span><span class="fab-mini-lbl">習慣</span></button>
+  <button class="fab-mini" data-target="memo" type="button"><span class="fab-mini-icon">📝</span><span class="fab-mini-lbl">メモ</span></button>
 </div>
 
 <div class="modal-overlay" id="settingsModal" style="display:none">
@@ -422,7 +424,7 @@ const MOODS=['mood1','mood2','mood3','mood4','mood5'];
 const MOOD_EMOJI={mood1:'🤩',mood2:'😊',mood3:'😐',mood4:'😢',mood5:'😴'};
 const MOOD_RESPONSES={mood1:'いい感じ！🎉',mood2:'いい一日にしようね 🌸',mood3:'そんな日もあるよ ☁',mood4:'がんばってきたね、ひと休み 🌿',mood5:'ゆっくり休んでね ☕'};
 const ENCOURAGE=['✨ 今日もえらいね！','🌸 がんばってるね','☁ あなたのペースで大丈夫','🌿 深呼吸しよう','💕 今日のあなたも素敵','🐢 少しずつでOK','😊 笑顔忘れずに','🥤 お水飲んだ？','☘ 肩のチカラ抜いてね','🌷 来てくれてありがとう','🌟 ちゃんと向き合えててすごい','🍀 焦らなくていいよ','🌙 今日もおつかれさま','💜 自分にやさしくね','🌸 一歩ずつ、着実に'];
-const EMPTY_MSGS=['今日は何する？✨','今日もがんばろう 🌸','ひと息ついてね ☕','やりたいこと、書いてみよう 📝','今日もマイペースで ☁','なにから始めようか 🌷','まっさらな1日 🍀'];
+const EMPTY_MSGS=['今日は何する？✨','今日もがんばろう 🌸','ひと息ついてね ☕','ToDoを書いてみよう 📝','今日もマイペースで ☁','なにから始めようか 🌷','まっさらな1日 🍀'];
 const TOAST_MSGS=['やったね！🎉','完了！✨','おつかれ！🌸','Nice! 💜','できた！⭐','すごい！🌟','ぐっじょぶ！💪'];
 const SPARKLE_EMOJI=['✨','🌟','💫','⭐','✦','✧'];
 const MOOD_SPARKLE=['💕','✨','🌸','💜','🌟','💖'];
@@ -705,15 +707,20 @@ function init(){
     setTimeout(()=>$('settingsModal').style.display='none',800);
   });
 
-  // Date menu
+  // Date menu (position:fixed - viewport coords)
   $('dateToggle').addEventListener('click',e=>{
     e.stopPropagation();
     const m=$('dateMenu'); const rect=$('dateToggle').getBoundingClientRect();
-    m.style.right='10px'; m.style.top=(rect.bottom-document.querySelector('.input-card').getBoundingClientRect().top+4)+'px';
+    const menuW=170;
+    let left=rect.left;
+    if(left+menuW>window.innerWidth-10)left=window.innerWidth-menuW-10;
+    m.style.left=left+'px';
+    m.style.top=(rect.bottom+6)+'px';
     m.classList.toggle('show');
   });
   $('dateMenu').addEventListener('click',e=>{
     const btn=e.target.closest('button'); if(!btn)return;
+    e.stopPropagation();
     const v=btn.dataset.d; setPendingDue(v==='clear'?'clear':v); $('dateMenu').classList.remove('show');
   });
   document.addEventListener('click',e=>{if(!e.target.closest('#dateMenu')&&!e.target.closest('#dateToggle'))$('dateMenu').classList.remove('show');});
@@ -789,14 +796,22 @@ function init(){
     $('fab').classList.toggle('open');
   });
   document.querySelectorAll('.fab-mini').forEach(el=>{
-    el.addEventListener('click',()=>{
+    el.addEventListener('click',ev=>{
+      ev.preventDefault();
       const target=el.dataset.target;
       $('fabWrap').classList.remove('open'); $('fab').classList.remove('open');
       let inp;
       if(target==='task'){inp=$('taskInput');}
       else if(target==='habit'){inp=$('habitInput');}
       else if(target==='memo'){inp=$('memoInput');}
-      if(inp){inp.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(()=>inp.focus(),400);}
+      if(inp){
+        // focus FIRST inside user gesture so iOS keyboard pops up
+        inp.focus({preventScroll:true});
+        // then scroll the input into view
+        requestAnimationFrame(()=>{
+          inp.scrollIntoView({behavior:'smooth',block:'center'});
+        });
+      }
     });
   });
 
